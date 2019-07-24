@@ -15,6 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Provides methods to create tickets from a template and create QR codes for them.
+"""
+
 import secrets
 import string
 import pyqrcode
@@ -233,3 +236,13 @@ class TicketTemplate(object):
             else:
                 self.placables[key].place(img, content)
         return img
+
+template_img = Image.open('/home/fabian/Pictures/easy-ticket/free-25-25.png')
+ticket_template = TicketTemplate(template_img)
+ticket_template.add_qr_code((95, 109))
+key = create_ticket_token()
+print(key)
+qr = create_qr(key)
+content = render_pil(qr, scale=6, quiet_zone=0, bg='white')
+final = ticket_template.render({'qr_code': content})
+final.show()
