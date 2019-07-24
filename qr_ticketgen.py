@@ -19,6 +19,10 @@ import secrets
 import string
 import pyqrcode
 from PIL import Image, ImageDraw
+from abc import ABC, abstractmethod
+import logging
+
+logger = logging.getLogger(__name__)
 
 def secret_sequence(num, sequence):
     return ''.join(secrets.choice(sequence) for _ in range(num))
@@ -48,7 +52,6 @@ def render_pil(qr, module_color='black', bg='white', scale=4, quiet_zone=4):
     # iterate over each row
     start_pos = quiet_zone * scale
     y_pos = start_pos
-    #d.rectangle([0, 0, size, size], fill='black')
     for row in code:
         x_pos = start_pos
         for entry in row:
@@ -59,10 +62,51 @@ def render_pil(qr, module_color='black', bg='white', scale=4, quiet_zone=4):
             x_pos += scale
         # increase y_pos
         y_pos += scale
-    img.show()
     return img
 
-#key = create_online_id()
-#print(key)
-#qr = create_qr(key)
-#render_pil(qr, scale=6, quiet_zone=0)
+# TODO use image or imagedraw instance?
+class Placeable(ABC):
+    @abstractmethod
+    def place(self, image, content):
+        pass
+
+
+class ImagePlaceable(Placeable):
+    def __init__(self, corner, scale_to=None):
+        super().__init__()
+        self.corner = corner
+        if isinstance(scale_to, int):
+            self.scale_to = (scale_to, scale_to)
+        else:
+            self.scale_to = scale_to
+
+    def place(self, image, content):
+        assert isinstance(content, Image.Image)
+        if self.scale_to is not None:
+            # thumbnail works in-place
+            content = content.copy()
+            content.thumbnail(self.scale_to)
+
+        image.paste(content, self.corner)
+
+
+class TicketTemplate(object):
+    def __init__(self, img, placables=None):
+        self.img = img
+        if placables is None:
+            placables = dict()
+        self.placables = placables
+
+    def add_qr_code(self, corner, scale_to=None):
+        self.placables['qr_code'] = ImagePlaceable(corner, scale_to)
+
+    def render(self, contents):
+        # methods work in-place, so we need to make a copy
+        img = self.img.copy()
+        for key, content in contents.items():
+            if key not in self.placables:
+                logger.warning('Key of content not found in ticket template: %s', key)
+            else:
+                self.placables[key].place(img, content)
+        return img
+
