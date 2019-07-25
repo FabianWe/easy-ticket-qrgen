@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'easy-ticket-qrgen'
+project = 'easyticket_qrgen'
 copyright = '2019, Fabian Wenzelmann'
 author = 'Fabian Wenzelmann'
 
@@ -80,7 +80,7 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -134,7 +134,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'easy-ticket-qrgen.tex', 'easy-ticket-qrgen Documentation',
+    (master_doc, 'easyticket_qrgen.tex', 'easyticket_qrgen Documentation',
      'Fabian Wenzelmann', 'manual'),
 ]
 
@@ -144,7 +144,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'easy-ticket-qrgen', 'easy-ticket-qrgen Documentation',
+    (master_doc, 'easyticket_qrgen', 'easyticket_qrgen Documentation',
      [author], 1)
 ]
 
@@ -155,8 +155,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'easy-ticket-qrgen', 'easy-ticket-qrgen Documentation',
-     author, 'easy-ticket-qrgen', 'One line description of project.',
+    (master_doc, 'easyticket_qrgen', 'easyticket_qrgen Documentation',
+     author, 'easyticket_qrgen', 'One line description of project.',
      'Miscellaneous'),
 ]
 

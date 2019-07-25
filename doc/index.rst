@@ -1,7 +1,7 @@
-Welcome to easy-ticket-qrgen's documentation!
+Welcome to easyticket_qrgen's documentation!
 =============================================
 
-.. automodule:: easy-ticket-qrgen
+.. automodule:: easyticket_qrgen.qr_ticketgen
     :members:
 
 .. toctree::

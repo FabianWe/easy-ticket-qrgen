@@ -16,6 +16,30 @@
 # limitations under the License.
 
 """Provides methods to create tickets from a template and create QR codes for them.
+
+Here's a short example on how to generate a ticket token and the qr code for it.
+
+Example:
+    >>> token = create_ticket_token()
+    >>> qr = create_qr(key)
+
+See the method documentation for more parameters.
+
+After a qr code is generated you can place it on a template image. In the following example the image template is
+assumed to be in the file "~/Pictures/ticket_template.png" and the QR code is placed on position (95, 109).
+
+Example:
+    >>> # load image
+    >>> template_img = Image.open('~/Pictures/ticket_template.png')
+    >>> # create a template object
+    >>> ticket_template = TicketTemplate(template_img)
+    >>> # need to call only once: always place qr code on that position
+    >>> ticket_template.add_qr_code((95, 109))
+    >>> # render qr code to PIL image
+    >>> content = render_pil(qr)
+    >>> # place this qr code on the ticket
+    >>> ticket = ticket_template.render({'qr_code': content})
+    >>> ticket.show()
 """
 
 import secrets
@@ -208,7 +232,7 @@ class TicketTemplate(object):
 
         Args:
             corner (two element tuple of ints): The point on which the QR code is placed in the template in the form
-            (x, y).
+                (x, y).
         scale_to (two element tuple of ints or None): If given the QR code pasted onto the template gets scaled to
             this dimension (width, height), otherwise the image is not scaled. The QR code should not be scaled but
             should be created with the right size before.
