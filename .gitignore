@@ -1,6 +1,6 @@
 py
 .idea
-doc/_build/
+docs/_build/
 
 
 # Byte-compiled / optimized / DLL files
