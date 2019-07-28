@@ -21,7 +21,7 @@ Here's a short example on how to generate a ticket token and the qr code for it.
 
 Example:
     >>> token = create_ticket_token()
-    >>> qr = create_qr(key)
+    >>> qr = create_qr(token)
 
 See the method documentation for more parameters.
 
@@ -39,6 +39,7 @@ Example:
     >>> content = render_pil(qr)
     >>> # place this qr code on the ticket
     >>> ticket = ticket_template.render({'qr_code': content})
+    >>> # the same template can be used to render more codes on the ticket
     >>> ticket.show()
 """
 
@@ -95,7 +96,8 @@ def create_qr(token, error='M', **kwargs):
 
     Args:
         token (str): The token to encode in the QR code.
-        error (str): The error level of the QR code ('L', 'M', 'Q', 'H'), 'L' allows less errors, 'H' the most.
+        error (str): The error level of the QR code ('L', 'M', 'Q', 'H'), 'L' allowst the least number of errors,
+            'H' the most.
         **kwargs (dict): All additional arguments passed to pyqrcode.create.
 
     Returns:
@@ -245,6 +247,8 @@ class TicketTemplate(object):
         contents is a dictionary mapping the names from placables to the actual content.
         For example the placable added by add_qr_code has the name 'qr_code' and thus in content there should be an
         entry 'qr_code' mapping to a PIL image of the QR code.
+
+        Only the placables with a key in contents will be activated.
 
         Args:
             contents (dict): Mapping the names from placables to the actual content.
